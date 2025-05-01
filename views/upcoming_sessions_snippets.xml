@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Template for the upcoming sessions snippet -->
+    <template id="upcoming_sessions_snippet_template" name="Upcoming Sessions">
+        <section class="upcoming-sessions-snippet" data-limit="3">
+            <div class="container">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Upcoming Sessions</h5>
+                        <a href="/event" class="btn btn-primary btn-sm">View All</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="sessions-loading">
+                            <i class="fa fa-spinner fa-spin"></i> Loading upcoming sessions...
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Session Name</th>
+                                        <th>Date &amp; Time</th>
+                                        <th>Location</th>
+                                        <th>Participants</th>
+                                        <th>Client</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Sessions will be loaded dynamically via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- Add the snippet to the snippets panel -->
+    <template id="upcoming_sessions_snippets" inherit_id="website.snippets">
+        <xpath expr="//div[@id='snippet_feature']/div[hasclass('o_panel_body')]" position="inside">
+            <t t-snippet="upcoming_sessions.upcoming_sessions_snippet_template"
+               t-thumbnail="/upcoming_sessions/static/description/icon.png"/>
+        </xpath>
+    </template>
+
+    <!-- Add options for the snippet -->
+    <template id="upcoming_sessions_options" inherit_id="website.snippet_options">
+        <xpath expr="//div" position="inside">
+            <div data-js="upcomingSessionsOptions" data-selector=".upcoming-sessions-snippet">
+                <we-select string="Number of Sessions" data-attribute-name="limit" data-attribute-default-value="4">
+                    <we-button data-select-data-value="1">1 Session</we-button>
+                    <we-button data-select-data-value="3">3 Sessions</we-button>
+                    <we-button data-select-data-value="5">5 Sessions</we-button>
+                    <we-button data-select-data-value="10">10 Sessions</we-button>
+                </we-select>
+                <we-colorpicker string="Header Background" data-name="header_bg_color_opt" data-select-style="true" data-css-property="background-color" data-css-selector=".card-header"/>
+                <we-colorpicker string="Card Border" data-name="card_border_color_opt" data-select-style="true" data-css-property="border-color" data-css-selector=".card"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

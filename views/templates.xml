@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="upcoming_sessions_test_page" name="Test Upcoming Sessions">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1>Testing Upcoming Sessions</h1>
+                <div id="test-result">Loading sessions...</div>
+                
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        console.log("Test page loaded");
+                        
+                        // Make a direct call to the RPC endpoint
+                        odoo.jsonRpc("/upcoming_sessions/data", 'call', {
+                            limit: 10
+                        }).then(function(data) {
+                            console.log("Success!", data);
+                            
+                            if (data && data.length) {
+                                var html = "<ul>";
+                                data.forEach(function(session) {
+                                    html += "<li>" + session.name + " - " + session.formatted_date + "</li>";
+                                });
+                                html += "</ul>";
+                                $("#test-result").html(html);
+                            } else {
+                                $("#test-result").html("No sessions found");
+                            }
+                        }).guardedCatch(function(error) {
+                            console.error("Error:", error);
+                            $("#test-result").html("Error: " + JSON.stringify(error));
+                        });
+                    });
+                </script>
+            </div>
+        </t>
+    </template>
+    
+    <!-- Add page to website menu -->
+    <record id="test_sessions_page" model="website.page">
+        <field name="url">/test-sessions</field>
+        <field name="website_published">True</field>
+        <field name="view_id" ref="upcoming_sessions_test_page"/>
+        <field name="name">Test Sessions</field>
+    </record>
+</odoo>
